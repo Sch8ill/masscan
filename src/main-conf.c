@@ -1663,6 +1663,7 @@ static int SET_output_format(struct Masscan *masscan, const char *name, const ch
             case Output_Certs:      fprintf(fp, "output-format = certs\n"); break;
             case Output_None:       fprintf(fp, "output-format = none\n"); break;
             case Output_Hostonly:   fprintf(fp, "output-format = hostonly\n"); break;
+            case Output_Address:     fprintf(fp, "output-format = address\n"); break;
             case Output_Redis:
                 fmt = ipaddress_fmt(masscan->redis.ip);
                 fprintf(fp, "output-format = redis\n");
@@ -1689,6 +1690,7 @@ static int SET_output_format(struct Masscan *masscan, const char *name, const ch
     else if (EQUALS("none", value))         x = Output_None;
     else if (EQUALS("redis", value))        x = Output_Redis;
     else if (EQUALS("hostonly", value))     x = Output_Hostonly;
+    else if (EQUALS("address", value))      x = Output_Address;
     else {
         LOG(0, "FAIL: unknown output-format: %s\n", value);
         LOG(0, "  hint: 'binary', 'xml', 'grepable', ...\n");
@@ -3386,11 +3388,11 @@ masscan_command_line(struct Masscan *masscan, int argc, char *argv[])
                 break;
             case 'o': /* nmap output format */
                 switch (argv[i][2]) {
-                case 'A':
+                /*case 'A':
                     masscan->output.format = Output_All;
                     fprintf(stderr, "nmap(%s): unsupported output format\n", argv[i]);
                     exit(1);
-                    break;
+                    break;*/
                 case 'B':
                     masscan->output.format = Output_Binary;
                     break;
@@ -3429,6 +3431,9 @@ masscan_command_line(struct Masscan *masscan, int argc, char *argv[])
                     break;
                 case 'H':
                     masscan_set_parameter(masscan, "output-format", "hostonly");
+                    break;
+                case 'A':
+                    masscan_set_parameter(masscan, "output-format", "address");
                     break;
                 default:
                     fprintf(stderr, "nmap(%s): unknown output format\n", argv[i]);

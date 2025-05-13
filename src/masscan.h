@@ -62,6 +62,7 @@ enum OutputFormat {
     Output_None         = 0x0400,
     Output_Certs        = 0x0800,
     Output_Hostonly     = 0x1000,   /* -oH, "hostonly" */
+    Output_Address      = 0x2000,
     Output_All          = 0xFFBF,   /* not supported */
 };
 
